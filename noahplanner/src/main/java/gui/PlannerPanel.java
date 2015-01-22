@@ -24,6 +24,7 @@ import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Color3f;
 import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Rot;
 import org.jbox2d.common.Transform;
@@ -57,6 +58,8 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 			PolygonShape shape = new PolygonShape() {{
 				setAsBox(size.x/2, size.y/2);
 			}};
+			// 箱の色
+			Color3f color = new Color3f(0.55f, 0.27f, 0.07f);
 			// 箱の名前の描画色
 			Color nameColor = new Color(1.0f, 1.0f, 1.0f);
 		}
@@ -606,7 +609,7 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 			body.createFixture(fd);
 			
 			UserData ud = new UserData();
-			ud.color.set(0.55f, 0.27f, 0.07f);
+			ud.color.set(Settings.Box.color);
 			body.setUserData(ud);
 		}
 	}

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Color3f;
+import org.jbox2d.common.IViewportTransform;
 import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
@@ -16,10 +17,11 @@ import org.jbox2d.pooling.arrays.Vec2Array;
 /**
  * {@link org.jbox2d.callbacks.DebugDraw} の実装
  */
-public class PhysicsDebugDraw extends DebugDraw {
+public class DrawHelper {
 	public static int circlePoints = 13;
 
 	private final PhysicsPanel panel;
+	private final IViewportTransform viewportTransform;
 	private final ColorPool cpool = new ColorPool();
 	private final boolean yFlip;
 
@@ -28,22 +30,20 @@ public class PhysicsDebugDraw extends DebugDraw {
 	private final IntArray xIntsPool = new IntArray();
 	private final IntArray yIntsPool = new IntArray();
 
-	public PhysicsDebugDraw(PhysicsPanel panel) {
-		super(panel.camera.transform);
+	public DrawHelper(PhysicsPanel panel) {
 		this.panel = panel;
+		viewportTransform = panel.camera.getTransform();
 		yFlip = panel.camera.transform.isYFlip();
 	}
 
 	private final Vec2Array vec2Array = new Vec2Array();
 
-	@Override
 	public void drawCircle(Vec2 center, float radius, Color3f color) {
 		Vec2[] vecs = vec2Array.get(circlePoints);
 		generateCirle(center, radius, vecs, circlePoints);
 		drawPolygon(vecs, circlePoints, color);
 	}
 
-	@Override
 	public void drawPoint(Vec2 argPoint, float argRadiusOnScreen, Color3f argColor) {
 		getWorldToScreenToOut(argPoint, sp1);
 		Graphics2D g = getGraphics();
@@ -58,7 +58,6 @@ public class PhysicsDebugDraw extends DebugDraw {
 	private final Vec2 sp1 = new Vec2();
 	private final Vec2 sp2 = new Vec2();
 
-	@Override
 	public void drawSegment(Vec2 p1, Vec2 p2, Color3f color) {
 		getWorldToScreenToOut(p1, sp1);
 		getWorldToScreenToOut(p2, sp2);
@@ -76,7 +75,6 @@ public class PhysicsDebugDraw extends DebugDraw {
 		drawPolygon(vecs, 4, color);
 	}
 
-	@Override
 	public void drawSolidCircle(Vec2 center, float radius, Vec2 axis, Color3f color) {
 		Vec2[] vecs = vec2Array.get(circlePoints);
 		generateCirle(center, radius, vecs, circlePoints);
@@ -87,7 +85,6 @@ public class PhysicsDebugDraw extends DebugDraw {
 		}
 	}
 
-	@Override
 	public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
 		// inside
 		Graphics2D g = getGraphics();
@@ -108,7 +105,6 @@ public class PhysicsDebugDraw extends DebugDraw {
 		drawPolygon(vertices, vertexCount, color);
 	}
 
-	@Override
 	public void drawString(float x, float y, String s, Color3f color) {
 		Graphics2D g = getGraphics();
 		if (g == null) {
@@ -118,14 +114,13 @@ public class PhysicsDebugDraw extends DebugDraw {
 		g.setColor(c);
 		g.drawString(s, x, y);
 	}
-
-	Graphics2D getGraphics() {
+	
+	protected Graphics2D getGraphics() {
 		return panel.getDBGraphics();
 	}
 
 	private final Vec2 temp2 = new Vec2();
 
-	@Override
 	public void drawTransform(Transform xf) {
 		Graphics2D g = getGraphics();
 		getWorldToScreenToOut(xf.p, temp);
@@ -146,6 +141,25 @@ public class PhysicsDebugDraw extends DebugDraw {
 		temp2.y = xf.p.y + k_axisScale * xf.q.c;
 		getWorldToScreenToOut(temp2, temp2);
 		g.drawLine((int) temp.x, (int) temp.y, (int) temp2.x, (int) temp2.y);
+	}
+	
+	private void drawPolygon(Vec2[] vertices, int vertexCount, Color3f color){
+		if(vertexCount == 1){
+			drawSegment(vertices[0], vertices[0], color);
+			return;
+		}
+		
+		for(int i=0; i<vertexCount-1; i+=1){
+			drawSegment(vertices[i], vertices[i+1], color);
+		}
+		
+		if(vertexCount > 2){
+			drawSegment(vertices[vertexCount-1], vertices[0], color);
+		}
+	}
+	
+	private void getWorldToScreenToOut(Vec2 argWorld, Vec2 argScreen) {
+		viewportTransform.getWorldToScreen(argWorld, argScreen);
 	}
 
 	// CIRCLE GENERATOR

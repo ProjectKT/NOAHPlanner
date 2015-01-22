@@ -96,7 +96,7 @@ public class PhysicsPanel extends JPanel {
 	// 描画用 Image
 	private Image dbImage = null;
 	// 描画ヘルパー
-	private final PhysicsDebugDraw debugDraw = new PhysicsDebugDraw(this);
+	private final DrawHelper helper = new DrawHelper(this);
 	
 	// デバッグ情報表示用
 	protected String title = null;
@@ -162,7 +162,6 @@ public class PhysicsPanel extends JPanel {
 		Vec2 gravity = new Vec2(0, 10f);
 		world = new World(gravity);
 		world.setContactListener(contactListener);
-		world.setDebugDraw(debugDraw);
 
 		// 地面の定義
 		BodyDef bd = new BodyDef();
@@ -319,7 +318,7 @@ public class PhysicsPanel extends JPanel {
 		textLine = 20;
 
 		if (title != null) {
-			debugDraw.drawString(camera.getTransform().getExtents().x, 15, title, Color3f.WHITE);
+			helper.drawString(camera.getTransform().getExtents().x, 15, title, Color3f.WHITE);
 			textLine += TEXT_LINE_SPACE;
 		}
 
@@ -329,7 +328,6 @@ public class PhysicsPanel extends JPanel {
 		flags += settings.drawAABBs ? DebugDraw.e_aabbBit : 0;
 		flags += settings.drawCOMs ? DebugDraw.e_centerOfMassBit : 0;
 		flags += settings.drawTree ? DebugDraw.e_dynamicTreeBit : 0;
-		debugDraw.setFlags(flags);
 
 		world.setAllowSleep(settings.allowSleep);
 		world.setWarmStarting(settings.enableWarmStarting);
@@ -338,7 +336,6 @@ public class PhysicsPanel extends JPanel {
 
 		world.step(timeStep, velocityIterations, positionIterations);
 
-		//world.drawDebugData();
 		draw(dbg);
 		drawDebugData(dbg);
 
@@ -346,7 +343,7 @@ public class PhysicsPanel extends JPanel {
 			mouseJoint.getAnchorB(p1);
 			Vec2 p2 = mouseJoint.getTarget();
 
-			debugDraw.drawSegment(p1, p2, Color3f.BLUE);
+			helper.drawSegment(p1, p2, Color3f.BLUE);
 		}
 	}
 	
@@ -385,7 +382,7 @@ public class PhysicsPanel extends JPanel {
 	        float radius = circle.m_radius;
 	        xf.q.getXAxis(axis);
 
-	        debugDraw.drawSolidCircle(center, radius, axis, color);
+	        helper.drawSolidCircle(center, radius, axis, color);
 	      }
 	        break;
 
@@ -399,14 +396,14 @@ public class PhysicsPanel extends JPanel {
 	          Transform.mulToOutUnsafe(xf, poly.m_vertices[i], vertices[i]);
 	        }
 
-	        debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+	        helper.drawSolidPolygon(vertices, vertexCount, color);
 	      }
 	        break;
 	      case EDGE: {
 	        EdgeShape edge = (EdgeShape) fixture.getShape();
 	        Transform.mulToOutUnsafe(xf, edge.m_vertex1, v1);
 	        Transform.mulToOutUnsafe(xf, edge.m_vertex2, v2);
-	        debugDraw.drawSegment(v1, v2, color);
+	        helper.drawSegment(v1, v2, color);
 	      }
 	        break;
 
@@ -418,8 +415,8 @@ public class PhysicsPanel extends JPanel {
 	        Transform.mulToOutUnsafe(xf, vertices[0], v1);
 	        for (int i = 1; i < count; ++i) {
 	          Transform.mulToOutUnsafe(xf, vertices[i], v2);
-	          debugDraw.drawSegment(v1, v2, color);
-	          debugDraw.drawCircle(v1, 0.05f, color);
+	          helper.drawSegment(v1, v2, color);
+	          helper.drawCircle(v1, 0.05f, color);
 	          v1.set(v2);
 	        }
 	      }
@@ -432,18 +429,18 @@ public class PhysicsPanel extends JPanel {
 	protected void drawDebugData(Graphics2D g) {
 		if (settings.drawStats) {
 			// Vec2.watchCreations = true;
-			debugDraw.drawString(5, textLine, "Engine Info", Color3f.GREEN);
+			helper.drawString(5, textLine, "Engine Info", Color3f.GREEN);
 			textLine += TEXT_LINE_SPACE;
-			debugDraw.drawString(5, textLine, "Framerate: toBeCalculated", Color3f.WHITE);
+			helper.drawString(5, textLine, "Framerate: toBeCalculated", Color3f.WHITE);
 			textLine += TEXT_LINE_SPACE;
-			debugDraw.drawString(5, textLine,
+			helper.drawString(5, textLine,
 					"bodies/contacts/joints/proxies = "
 							+ world.getBodyCount() + "/"
 							+ world.getContactCount() + "/"
 							+ world.getJointCount() + "/"
 							+ world.getProxyCount(), Color3f.WHITE);
 			textLine += TEXT_LINE_SPACE;
-			debugDraw.drawString(5, textLine, "World mouse position: " + mouseScreen.toString(), Color3f.WHITE);
+			helper.drawString(5, textLine, "World mouse position: " + mouseScreen.toString(), Color3f.WHITE);
 			textLine += TEXT_LINE_SPACE;
 
 			statsList.clear();
@@ -451,17 +448,17 @@ public class PhysicsPanel extends JPanel {
 			p.toDebugStrings(statsList);
 
 			for (String s : statsList) {
-				debugDraw.drawString(5, textLine, s, Color3f.WHITE);
+				helper.drawString(5, textLine, s, Color3f.WHITE);
 				textLine += TEXT_LINE_SPACE;
 			}
 			textLine += TEXT_SECTION_SPACE;
 		}
 
 		if (!textList.isEmpty()) {
-			debugDraw.drawString(5, textLine, "Test Info", Color3f.GREEN);
+			helper.drawString(5, textLine, "Test Info", Color3f.GREEN);
 			textLine += TEXT_LINE_SPACE;
 			for (String s : textList) {
-				debugDraw.drawString(5, textLine, s, Color3f.WHITE);
+				helper.drawString(5, textLine, s, Color3f.WHITE);
 				textLine += TEXT_LINE_SPACE;
 			}
 			textList.clear();
