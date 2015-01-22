@@ -67,6 +67,8 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 		float RobotOperationSpeed = 20.0f;
 		// ホームポジション
 		Vec2 HomePosition = new Vec2(-Box.size.x*2.5f, -10.0f);
+		// 背景
+		Color backgroundColor = new Color(0.29f, 0.47f, 1.0f);
 	}
 	
 	// テーブルのボディ
@@ -514,6 +516,13 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 	public boolean render() {
 		manipulateWorld();
 		return super.render();
+	}
+	
+	@Override
+	protected void draw(Graphics2D g) {
+		g.setColor(Settings.backgroundColor);
+		g.fillRect(0, 0, panelWidth, panelHeight);
+		super.draw(g);
 	}
 
 	private void manipulateWorld() {
