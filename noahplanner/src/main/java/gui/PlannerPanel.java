@@ -67,8 +67,6 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 		float RobotOperationSpeed = 20.0f;
 		// ホームポジション
 		Vec2 HomePosition = new Vec2(-Box.size.x*2.5f, -10.0f);
-		// 積む位置
-		Vec2 PilePosition = new Vec2(-Box.size.x, -Box.size.y/2);
 	}
 	
 	// テーブルのボディ

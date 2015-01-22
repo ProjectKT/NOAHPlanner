@@ -60,21 +60,9 @@ public class PhysicsPanel extends JPanel {
 	// 設定
 	public class Settings {
 		// スクロールするか
-		boolean scrollScreen = true;
-		// Body を描画するか
-		boolean drawShapes = true;
-		// Joint を描画するか
-		boolean drawJoints = true;
-		// AABB を描画するか
-		boolean drawAABBs = false;
-		// COM を描画するか
-		boolean drawCOMs = false;
-		// Tree を描画するか
-		boolean drawTree = false;
-		// draw stats
+		public boolean scrollScreen = true;
 		public boolean drawStats = false;
-		
-		boolean allowSleep = false;
+		public boolean allowSleep = false;
 		public boolean enableWarmStarting = false;
 		public boolean enableSubStepping = false;
 		public boolean enableContinuousCollision = false;
@@ -321,13 +309,6 @@ public class PhysicsPanel extends JPanel {
 			helper.drawString(camera.getTransform().getExtents().x, 15, title, Color3f.WHITE);
 			textLine += TEXT_LINE_SPACE;
 		}
-
-		int flags = 0;
-		flags += settings.drawShapes ? DebugDraw.e_shapeBit : 0;
-		flags += settings.drawJoints ? DebugDraw.e_jointBit : 0;
-		flags += settings.drawAABBs ? DebugDraw.e_aabbBit : 0;
-		flags += settings.drawCOMs ? DebugDraw.e_centerOfMassBit : 0;
-		flags += settings.drawTree ? DebugDraw.e_dynamicTreeBit : 0;
 
 		world.setAllowSleep(settings.allowSleep);
 		world.setWarmStarting(settings.enableWarmStarting);
