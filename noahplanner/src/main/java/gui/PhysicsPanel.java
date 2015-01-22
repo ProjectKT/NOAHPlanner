@@ -281,8 +281,6 @@ public class PhysicsPanel extends JPanel {
 			dbg = (Graphics2D) dbImage.getGraphics();
 			dbg.setFont(new Font("Courier New", Font.PLAIN, 12));
 		}
-		dbg.setColor(Color.black);
-		dbg.fillRect(0, 0, panelWidth, panelHeight);
 		return true;
 	}
 	

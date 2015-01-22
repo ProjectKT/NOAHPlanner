@@ -69,6 +69,8 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 		Vec2 HomePosition = new Vec2(-Box.size.x*2.5f, -10.0f);
 		// 積む位置
 		Vec2 PilePosition = new Vec2(-Box.size.x, -Box.size.y/2);
+		// 背景
+		Color backgroundColor = new Color(0.39f, 0.58f, 0.93f);
 	}
 	
 	// テーブルのボディ
@@ -516,6 +518,13 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 	public boolean render() {
 		manipulateWorld();
 		return super.render();
+	}
+	
+	@Override
+	protected void draw(Graphics2D g) {
+		g.setColor(Settings.backgroundColor);
+		g.fillRect(0, 0, panelWidth, panelHeight);
+		super.draw(g);
 	}
 
 	private void manipulateWorld() {
