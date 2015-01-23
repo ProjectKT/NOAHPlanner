@@ -29,6 +29,28 @@
       new TOutliner('h2', '#outline');
     });
   </script>
+  
+  <style>
+h3 {
+  margin-top: 40px;
+}
+h4 {
+  margin-top: 50px;
+  padding-left: 7px;
+  border-left: 10px #050 double;
+  color: #335030;
+}
+h4.headless {
+  margin-top: 0;
+}
+table.table {
+  margin: auto;
+}
+table.table thead tr:last-child th {
+  border-bottom: 1px #000 solid;
+}
+  </style>
+  
 
   <title>知能プログラミング演習IIグループ作成 レポート</title>
 </head>
@@ -47,58 +69,71 @@
 <!-- グループ全員の名前, 学籍番号を書き，個人作成書類へのリンクを張る -->
 <h2>メンバー</h2>
 <ul>
-<li><a href="../../../../cjh15000/workspace/kprep/repX/index.html">名工大輔 24115000 </a>
-<li><a href="../../../../cjh15999/workspace/kprep/repX/index.html">名工太郎 24115999 </a>
+<li><a href="../../../../cjh15067/workspace/kprep/rep8/index.html">佐藤清隆 24115067</a>
+<li><a href="../../../../cjh15088/workspace/kprep/rep8/index.html">寺部和紀 24115088</a>
+<li><a href="../../../../cjh15109/workspace/kprep/rep8/index.html">早川駿 24115109</a>
+<li><a href="../../../../cjh15110/workspace/kprep/rep8/index.html">林幸汰 24115110</a>
+<li><a href="../../../../cjh15113/workspace/kprep/rep8/index.html">林政行 24115113</a>
 </ul>
 
 <h2>役割分担</h2>
 <!-- 役割分担を書く．-->
 <ul>
-<li>名工大輔: GUI担当
-<li>名工太郎: ドキュメント担当
+<li>佐藤清隆 : planning担当
+<li>寺部和紀 : GUI担当
+<li>早川駿 : GUI担当
+<li>林幸汰 : planning担当
+<li>林政行 : graphic担当
 </ul>
 
 <h2>ソースファイル</h2>
 <ul>
-  <li><a href="../../rep1/src/Fibonacci.java">Fibonacci.java</a>
+  <li><a href="../../noahplanner/src/main/java/gui/PhysicsDebugDraw.java">PhysicsDebugDraw.java</a>
+  <li><a href="../../noahplanner/src/main/java/gui/PhysicsPanel.java">PhysicsPanel.java</a>
+  <li><a href="../../noahplanner/src/main/java/gui/PlannerController.java">PlannerController.java</a>
+  <li><a href="../../noahplanner/src/main/java/gui/PlannerPanel.java">PlannerPanel.java</a>
+  <li><a href="../../noahplanner/src/main/java/gui/SampleGUI.java">SampleGUI.java</a>
+  <li><a href="../../noahplanner/src/main/java/gui/Camera.java">Camera.java</a>
+  <li><a href="../../noahplanner/src/main/java/planner/NOAH.java">NOAH.java</a>
+  <li><a href="../../noahplanner/src/main/java/planner/NOAHParameters.java">NOAHParameters.java</a>
+  <li><a href="../../noahplanner/src/main/java/planner/Operator.java">Operator.java</a>
+  <li><a href="../../noahplanner/src/main/java/planner/Node.java">Node.java</a>
+  <li><a href="../../noahplanner/src/main/java/planner/JointJ.java">JointJ.java</a>
+  <li><a href="../../noahplanner/src/main/java/planner/JointS.java">JointS.java</a>
     <!-- 実装・変更したソースファイルへのリンク．修正する． -->
     <!-- ※ リンクは絶対パスに変更せず，上記のような相対パスのままで！ -->
 </ul>
 
 <hr>
 
-<h2>課題1-1</h2>
+<h2>課題8-1</h2>
 <!-- 課題を書く．-->
-N番目のフィボナッチ数をもとめるプログラムを実装せよ．
+<p>
+2/2と2/9に，最終発表会を行う．
+課題7で実装したプランニングシステムについて，発表の準備をせよ． 
+</p>
+<p>
+デモシナリオをグループで話し合って決めよ．
+実装したシステムの工夫点やアピールポイントが効果的に伝わるようなデモシナリオを考えること．
+また，そのために新たにシステムの実装を拡張しても構わない．
+なお，発表時間は，説明とデモンストレーションをあわせて12分間とする．
+</p>
 
 <h3>独自仕様の説明</h3>
 <!--
  もし自分で独自に決めた仕様があれば，その説明を書く．
 -->
-<p>グループで話し合った結果，課題に加えて，以下の三点を独自仕様として組み込んだ．</p>
+<p>グループで話し合った結果，課題7で提出したシステムに加えて，以下の2点をデモ用の拡張機能として組み込んだ．</p>
 
 <ol>
-  <li>与えられた数がフィボナッチ数かどうかを判定する</li>
-  <li>N番目のフィボナッチ数だけではなく，N番目までのフィボナッチ数列を返す</li>
-  <li>フィボナッチ数の一般項を用いてN番目のフィボナッチ数を求める</li>
+  <li>ファイルから初期状態、目標状態の読み込みを行う</li>
+  <li>GUI を改良し、華やかにする</li>
 </ol>
-
-<p>
-  1.に関して，ユーザーから数字が与えられた時，それがフィボナッチ数である時に true を返し，
-  フィボナッチ数ではない時には false を返す仕様とした．
-</p>
-<p>
-  2.に関しては，整数Nが与えられた時，0番目からN番目までのフィボナッチ数列を配列として返す仕様とした．
-</p>
-<p>3.に関しては……</p>
 
 <h3>プログラムの構造</h3>
 <!--  どのような設計をしたか．-->
 <p>
-  実装したプログラムは単一のクラス Fibonacci で構成されている．
-  Fibonacci クラスはインスタンスメソッドとして，calcFibo(), isFibo(), calcFiboSeq(), calcFiboGeneral() を持つ．
-  calcFibo() メソッドは引数として Int 型の値 n を取り，n 番目のフィボナッチ数を戻り値として返す．
-  isFibo() メソッドは……
+  
 </p>
 
 
@@ -108,12 +143,11 @@ N番目のフィボナッチ数をもとめるプログラムを実装せよ．
  特に重要な箇所はレポートにペーストして説明する．
 -->
 <p>
-  実装したプログラムに関して，先に挙げた calcFibo(), isFibo(), calcFiboSeq(), calcFiboGeneral() メソッドの説明を行う．
-  calcFibo() は名工太郎，isFibo() は名工大輔，calcFiboSeq() は名大三郎，calcFiboGeneral() は東工太郎が実装を行った．
+  
 </p>
 
 <p>
-  下記は calcFibo() メソッドの実装である．ここで特筆すべき点は……
+  
 </p>
 
 <!--
@@ -135,19 +169,87 @@ N番目のフィボナッチ数をもとめるプログラムを実装せよ．
 <h3>実行例</h3>
 <!-- 実行例を示す．PNGやGIF等の絵を張っても良い．-->
 <p>
-  calcFibo() メソッドの戻り値を標準出力に出力した結果を下図に示す．
+  
 </p>
 
-<!-- 画像ファイルを貼る場合は <img> タグを使う -->
-<img src="./hoge/image.png"/>
 
+<h2>課題8-2</h2>
 <p>
-  今回は0, 1番目のフィボナッチ数を1としたため，図で表したように calcFibo() の引数に5を与えた時は8となるのが正しい動作である．……
+発表スライドを作成せよ．
+発表スライドのエディタ（LibreOfficeのImpress）は，以下のコマンドで起動できる．
+</p>
+<pre>
+cjh15xxx@cse:~> loffice --impress &
+</pre>
+<p>
+スライドには次の7点を含めること．
+</p>
+<ul>
+    <li>グループ構成（メンバーと役割分担）</li>
+    <li>システムの概要</li>
+    <li>システムの仕様（たとえば機能や入出力，システム構成など）</li>
+    <li>システムの特長（アピールポイント）</li>
+    <li>実装上の工夫</li>
+    <li>考察</li>
+    <li>感想</li>
+</ul>
+<p>
+また，Grep8のindex.htmlには，発表スライドをPDFにしたものをリンクすること（「ファイル」メニューの「PDF としてエクスポート」でPDFにできる）．
 </p>
 
-<h2>課題1-2</h2>
-<!-- 以下，上記と同様 -->
-(以下同様)
+<h3>独自仕様の説明</h3>
+<!--
+ もし自分で独自に決めた仕様があれば，その説明を書く．
+-->
+<p>独自仕様は無い。</p>
+
+<h3>プログラムの構造</h3>
+<!--  どのような設計をしたか．-->
+<p>プログラムの構造は無い。</p>
+
+
+<h3>実装の説明</h3>
+<!--
+ どう実装したか，ソースコードを詳細に説明する．
+ 特に重要な箇所はレポートにペーストして説明する．
+-->
+<p>実装の説明は無い。</p>
+
+
+<h3>実行例</h3>
+<!-- 実行例を示す．PNGやGIF等の絵を張っても良い．-->
+<p>実行例は無い。</p>
+
+<h2>課題8-3</h2>
+<p>
+発表のリハーサルを行いなさい．
+発表時間12分に対して，リハーサルでかかった時間を記せ（本番で10分に満たなかった場合や，12分を大きく超えてしまった場合は減点対象になるので注意）．
+また，発表後にグループ内で擬似的に質疑応答を行い，その内容をGrep8に記せ（本番の質疑応答は2分間）．
+さらに，発表で改善すべき点についてもグループ内で話し合い，Grep8で考察せよ． 
+</p>
+
+<h3>独自仕様の説明</h3>
+<!--
+ もし自分で独自に決めた仕様があれば，その説明を書く．
+-->
+<p>独自仕様は無い。</p>
+
+<h3>プログラムの構造</h3>
+<!--  どのような設計をしたか．-->
+<p>プログラムは無い。</p>
+
+
+<h3>実装の説明</h3>
+<!--
+ どう実装したか，ソースコードを詳細に説明する．
+ 特に重要な箇所はレポートにペーストして説明する．
+-->
+<p>実装の説明は無い。</p>
+
+
+<h3>実行例</h3>
+<!-- 実行例を示す．PNGやGIF等の絵を張っても良い．-->
+<p>実行例は無い。</p>
 
 <h2>考察</h2>
 <!--
@@ -155,12 +257,11 @@ N番目のフィボナッチ数をもとめるプログラムを実装せよ．
  例: 自分で工夫して解決した点，その解決手法，なぜそうしたのか，その手法の素晴らしさ，上手くいかなかった点，なぜ上手くいかなかったのか，など．
  例: 今回はできなかったが，更に〜の機能を追加すべきである．なぜなら，...
 -->
+<h4 class="headless">リハーサル時の質疑応答内容</h4>
 <p>
-  今回，フィボナッチ数をもとめるためのクラス Fibonacci を実装し，インスタンスメソッドとして機能を実装したが，
-  実装後にグループで考察したところ，これは静的クラス，または，シングルトンとして実装した方が適していたという結論となった．
-  なぜなら……
+  
 </p>
-
+<h4>発表で改善すべき点</h4>
 
 <hr>
 
@@ -178,8 +279,7 @@ N番目のフィボナッチ数をもとめるプログラムを実装せよ．
 <!-- 参考文献を書く．助けてもらった人がいれば，それも書く-->
 
 <ul>
-  <li>2XXXXXXX MIT太郎君</li>
-  <li>名大次郎 著（19XX）『Java プログラミング』オレイリー社</li>
+  <li></li>
 </ul>
 
 </body>
