@@ -1,0 +1,19 @@
+clear 1
+1 on 2
+2 on 3
+3 on 4
+clear 5
+5 on 6
+6 on 7
+7 on 8
+8 on 9
+
+clear 6
+6 on 3
+3 on 4
+clear 2
+2 on 5
+5 on 1
+clear 8
+8 on 9
+9 on 7
