@@ -77,13 +77,13 @@ public class SampleGUI extends JFrame implements ActionListener{
 	public SampleGUI() {
 		initialize();
 		
-		//loadData();
-		
+
+
 		setVisible(true);
 		
 		// 初期状態・終了状態を設定
 		initPlanner();
-		
+
 		// TODO Planner の出力を元に PlannerPanel のコマンドを呼ぶ操作パネル、レイアウトの作成
 		// 1. 初期状態、目標状態を入れるための入力コンポーネントを用意する
 		// 2. 入力された内容を元に Planner を動かし、プランをもらう
@@ -91,6 +91,13 @@ public class SampleGUI extends JFrame implements ActionListener{
 		
 	}
 	
+	private void loadInitialFile() {
+		currentFile = new File("demoData2.data");
+
+		//currentFile = new File(".//..//..//..//..//demoData2.data");
+		System.out.println(currentFile);
+	}
+
 	// 初期化
 	private void initialize() {		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -380,6 +387,15 @@ public class SampleGUI extends JFrame implements ActionListener{
 		this.goalList.clear();
 		this.goalList.addAll(goalList);
 		
+		loadInitialFile();
+		
+		try {
+			loadData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("startList"+startList);
 		System.out.println("goalList"+goalList);
 		objects = noah.getObjects();
@@ -468,6 +484,7 @@ public class SampleGUI extends JFrame implements ActionListener{
 			int selected = fileChooser.showOpenDialog((Component)e.getSource());
 			if (selected == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
+				System.out.println(file.getPath());
 				//loadFile(file);
 				currentFile = file;
 				try {

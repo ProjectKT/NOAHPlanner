@@ -10,13 +10,13 @@ clear C
 C on 7
 7 on 8
 8 on 9
-clear 13
-13 on 10
-10 on 11
-11 on 12
-12 on 14
-14 on 15
-15 on 16
+clear Ｎ
+Ｎ on Ｏ
+Ｏ on Ａ
+Ａ on Ｈ
+Ｈ on す
+す on ご
+ご on い
 
 clear 清
 清 on 隆
@@ -31,10 +31,10 @@ clear 8
 8 on 7
 clear 9
 ontable 9
-clear 13
-13 on 10
-10 on 11
-11 on 12
-12 on 14
-14 on 15
-15 on 16
+clear Ｎ
+Ｎ on Ｏ
+Ｏ on Ａ
+Ａ on Ｈ
+Ｈ on す
+す on ご
+ご on い
