@@ -6,13 +6,15 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +37,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
-import component.DataFilter;
 import planner.NOAH;
+
+import component.DataFilter;
 
 public class SampleGUI extends JFrame implements ActionListener{
 
@@ -68,11 +71,13 @@ public class SampleGUI extends JFrame implements ActionListener{
 	JTextArea txtGoal = new JTextArea("");//目標状態のエリア
 	JTextArea txtAnswer = new JTextArea("");//解答のエリア
 	
+	File currentFile =null;
+	
 	// コンストラクタ
 	public SampleGUI() {
 		initialize();
 		
-		loadData();
+		//loadData();
 		
 		setVisible(true);
 		
@@ -464,8 +469,13 @@ public class SampleGUI extends JFrame implements ActionListener{
 			if (selected == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				//loadFile(file);
-				//currentFileName = file.getName();
-				loadData();
+				currentFile = file;
+				try {
+					loadData();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
     	
 	}
@@ -473,8 +483,48 @@ public class SampleGUI extends JFrame implements ActionListener{
         
     }
 	
-	private void loadData(){
+
+
+	private void loadData() throws IOException {
+		StringBuilder sb = new StringBuilder();
+		BufferedReader reader = null;
+		reader = new BufferedReader(new FileReader(currentFile));
+		Boolean currentGoalMidFlag = true;
+		ArrayList<String> startList = new ArrayList<String>();
+		ArrayList<String> goalList = new ArrayList<String>();
+		try {
+			String s;
+			while ((s = reader.readLine()) != null) {
+				System.out.println(s);
+				if(s.isEmpty()){
+					currentGoalMidFlag = false;
+				}
+				if(currentGoalMidFlag){
+					startList.add(s);
+				}else{
+					goalList.add(s);
+				}
+			}
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+		// 初期状態の準備
+		Collections.sort(startList);
+		initPlannerPanel(startList, startPanel);
+		this.startList.clear();
+		this.startList.addAll(startList);
 		
+		// 目標状態の準備
+		Collections.sort(goalList);
+		initPlannerPanel(goalList, goalPanel);
+		this.goalList.clear();
+		this.goalList.addAll(goalList);
+		
+		System.out.println("startList"+startList);
+		System.out.println("goalList"+goalList);
+		objects = noah.getObjects();
 	}
 	
 	private class PlannerStepExecutor implements ActionListener, Runnable {

@@ -1,0 +1,40 @@
+clear 隆
+隆 on 2
+2 on 3
+clear 清
+清 on B
+B on 4
+4 on 5
+5 on 6
+clear C
+C on 7
+7 on 8
+8 on 9
+clear 13
+13 on 10
+10 on 11
+11 on 12
+12 on 14
+14 on 15
+15 on 16
+
+clear 清
+清 on 隆
+隆 on 2
+2 on 3
+clear B
+B on C
+clear 4
+4 on 5
+5 on 6
+clear 8
+8 on 7
+clear 9
+ontable 9
+clear 13
+13 on 10
+10 on 11
+11 on 12
+12 on 14
+14 on 15
+15 on 16
