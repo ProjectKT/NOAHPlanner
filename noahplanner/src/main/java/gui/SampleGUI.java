@@ -5,12 +5,14 @@ import gui.PlannerController.StatesChangeListener;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +21,12 @@ import java.util.regex.Pattern;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
@@ -31,6 +35,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
+import component.DataFilter;
 import planner.NOAH;
 
 public class SampleGUI extends JFrame implements ActionListener{
@@ -38,6 +43,7 @@ public class SampleGUI extends JFrame implements ActionListener{
 	// 
 	JPanel panel = new JPanel();
 	CardLayout layout = new CardLayout();
+	JMenuItem mntmOpenFile;
 	// Label
 	JLabel stepLabel;
 	// 物体を表示するパネル
@@ -94,6 +100,11 @@ public class SampleGUI extends JFrame implements ActionListener{
 		mnFile.setBackground(new Color(192, 192, 192));
 		mnFile.setForeground(Color.RED);
 		menuBar.add(mnFile);
+		
+		mntmOpenFile = new JMenuItem("Open File");
+		mntmOpenFile.addActionListener(this);
+		mntmOpenFile.setActionCommand("Open File");
+		mnFile.add(mntmOpenFile);
 		
 		JMenu mnNewMenu_1 = new JMenu("State");
 		menuBar.add(mnNewMenu_1);
@@ -442,7 +453,22 @@ public class SampleGUI extends JFrame implements ActionListener{
     		txtGoal.setText("");
     	}else if(cmd.equals("text")){
     		layout.last(panel);
-    	}
+    	}else	if(cmd.equals("Open File")){
+
+    		System.out.println("!!");
+    		JFileChooser fileChooser = new JFileChooser();
+			fileChooser.addChoosableFileFilter(new DataFilter());
+			//fileChooser.setCurrentDirectory(currentDirectory);
+			fileChooser.setDialogTitle("OpenFile");
+			int selected = fileChooser.showOpenDialog((Component)e.getSource());
+			if (selected == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				//loadFile(file);
+				//currentFileName = file.getName();
+				loadData();
+			}
+    	
+	}
 
         
     }
@@ -456,7 +482,7 @@ public class SampleGUI extends JFrame implements ActionListener{
 		final Pattern p2 = Pattern.compile("remove (.*) from (.*)");
 		final Pattern p3 = Pattern.compile("put (.*) down on the table");
 		final Pattern p4 = Pattern.compile("Place (.*) on (.*)");
-		
+		//JFileChooser fileChooser = new JFileChooser();
 		int ptr = 0;
 		boolean loop = false;
 		Thread th;
@@ -464,6 +490,9 @@ public class SampleGUI extends JFrame implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
+
+			
+			
 			if(cmd.equals("play")) {
 				start();
 			}else if(cmd.equals("pause")){
@@ -483,6 +512,11 @@ public class SampleGUI extends JFrame implements ActionListener{
 	    	}
 		}
 		
+		private void loadFile(File file) {
+			// TODO Auto-generated method stub
+			
+		}
+
 		public void initialize() {
 			try { stop(); } catch (InterruptedException e) { }
 			ptr = 0;

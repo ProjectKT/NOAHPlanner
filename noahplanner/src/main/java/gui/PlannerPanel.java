@@ -68,7 +68,8 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 		// ホームポジション
 		Vec2 HomePosition = new Vec2(-Box.size.x*2.5f, -10.0f);
 		// 背景
-		Color backgroundColor = new Color(0.29f, 0.47f, 1.0f);
+//		Color backgroundColor = new Color(0.29f, 0.47f, 1.0f);
+		Color backgroundColor = new Color(0,0,0);
 	}
 	
 	// テーブルのボディ
