@@ -37,9 +37,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.filechooser.FileFilter;
 
 import planner.NOAH;
-import component.DataFilter;
 
 public class SampleGUI extends JFrame implements ActionListener {
 
@@ -82,12 +82,6 @@ public class SampleGUI extends JFrame implements ActionListener {
 
 		// 初期状態・終了状態を設定
 		initPlanner();
-
-		// TODO Planner の出力を元に PlannerPanel のコマンドを呼ぶ操作パネル、レイアウトの作成
-		// 1. 初期状態、目標状態を入れるための入力コンポーネントを用意する
-		// 2. 入力された内容を元に Planner を動かし、プランをもらう
-		// 3. 受け取ったプランを元に、 PlannerPanel の操作メソッドを呼び、操作する
-
 	}
 
 	private void loadInitialFile() {
@@ -497,7 +491,7 @@ public class SampleGUI extends JFrame implements ActionListener {
 
 			System.out.println("!!");
 			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.addChoosableFileFilter(new DataFilter());
+			fileChooser.addChoosableFileFilter(dataFilter);
 			// fileChooser.setCurrentDirectory(currentDirectory);
 			fileChooser.setDialogTitle("OpenFile");
 			int selected = fileChooser
@@ -718,6 +712,42 @@ public class SampleGUI extends JFrame implements ActionListener {
 		}
 	};
 
+	private final FileFilter dataFilter = new FileFilter() {
+
+		public boolean accept(File f) {
+			if (f.isDirectory()) {
+				return true;
+			}
+
+			String ext = getExtension(f);
+			if (ext != null) {
+				if (ext.equals("data")) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			return false;
+		}
+
+		public String getDescription() {
+			return "dataファイル";
+		}
+
+		private String getExtension(File f) {
+			String ext = null;
+			String filename = f.getName();
+			int dotIndex = filename.lastIndexOf('.');
+
+			if ((dotIndex > 0) && (dotIndex < filename.length() - 1)) {
+				ext = filename.substring(dotIndex + 1).toLowerCase();
+			}
+
+			return ext;
+		}
+	};
+	
 	public static void main(String[] args) {
 		//
 
