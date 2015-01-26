@@ -6,6 +6,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -108,6 +110,7 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 
 	private void initialize() {
 		addContactListener(statesWatcher);
+		addKeyListener(keyAdapter);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -182,6 +185,7 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 			
 			UserData ud = new UserData();
 			ud.color.set(0.80f, 0.52f, 0.25f);
+			ud.isSelectable = false;
 			table.setUserData(ud);
 		}
 		tablePtr = 0;
@@ -393,6 +397,27 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 	}
 	
 	@Override
+	public void removeBox(String name) {
+		synchronized (boxMap) {
+			final Box box = boxMap.remove(name);
+			if (box != null) {
+				final Runnable r = new Runnable() {
+					@Override
+					public void run() {
+						destroyBody(box.body);
+						updateHighestBoxY(box);
+					}
+				};
+				if (isAnimating()) {
+					manipulations.add(r);
+				} else {
+					r.run();
+				}
+			}
+		}
+	}
+
+	@Override
 	public void clear() throws InterruptedException {
 		clearAll();
 		
@@ -494,6 +519,28 @@ public class PlannerPanel extends PhysicsPanel implements PlannerController {
 			updateStates();
 			if (statesChangeListener != null) {
 				statesChangeListener.onChangeStates((List<String>) states.clone());
+			}
+		}
+	};
+	
+	private final KeyAdapter keyAdapter = new KeyAdapter() {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			final int keyCode = e.getKeyCode();
+			switch (keyCode) {
+			case KeyEvent.VK_DELETE: {
+				final List<Body> bodies = getSelectedBodies();
+				synchronized (bodies) {
+					for (Body body : bodies) {
+						String name = findBox(body);
+						if (name != null) {
+							removeBox(name);
+						}
+					}
+				}
+				e.consume();
+				break;
+			}
 			}
 		}
 	};

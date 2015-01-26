@@ -14,16 +14,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
-import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.Manifold;
@@ -32,7 +31,7 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Color3f;
-import org.jbox2d.common.Settings;
+import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -331,11 +330,20 @@ public class PhysicsPanel extends JPanel {
 		
 		for (Body b = m_bodyList; b != null; b = b.getNext()) {
 			final UserData bdata = (UserData) b.getUserData();
+			final boolean isSelected = selectedBodies.contains(b);
 			xf.set(b.getTransform());
 			color.set((bdata != null && bdata.color != null) ? bdata.color : settings.baseColor);
 			for (Fixture f = b.getFixtureList(); f != null; f = f.getNext()) {
 				final UserData fdata = (UserData) f.getUserData();
 				color.set((fdata != null && fdata.color != null) ? fdata.color : color);
+				
+				if (isSelected) {
+					final float factor = MathUtils.min(MathUtils.min(1.0f/color.x, 1.0f/color.y), 1.0f/color.z);
+					color.x *= factor;
+					color.y *= factor;
+					color.z *= factor;
+				}
+				
 				if (b.isActive() == false) {
 					drawShape(f, xf, color);
 				} else if (b.getType() == BodyType.STATIC) {
@@ -513,6 +521,10 @@ public class PhysicsPanel extends JPanel {
 	private final Vec2 mouseScreen = new Vec2();
 	private final Vec2 oldMouseScreen = new Vec2();
 	private boolean draggingBody = false;
+	private final List<Body> selectedBodies = Collections.synchronizedList(new ArrayList<Body>());
+	protected List<Body> getSelectedBodies() {
+		return selectedBodies;
+	}
 	
 	private MouseAdapter mouseAdapter = new MouseAdapter() {
 		@Override
@@ -531,6 +543,18 @@ public class PhysicsPanel extends JPanel {
 			updateMouse(e);
 			oldMouseScreen.set(mouseScreen);
 			draggingBody = spawnMouseJoint(mouseWorld);
+			
+			// ボディの
+			if (!e.isShiftDown() && !e.isControlDown() && !e.isMetaDown()) {
+				selectedBodies.clear();
+			}
+			final Body body = getBodyAt(mouseWorld.x, mouseWorld.y);
+			if (body != null) {
+				Object ud = body.getUserData();
+				if (ud != null && ((UserData) ud).isSelectable) {
+					selectedBodies.add(body);
+				}
+			}
 		}
 		@Override
 		public void mouseDragged(MouseEvent e) {
@@ -627,6 +651,7 @@ public class PhysicsPanel extends JPanel {
 	
 	protected class UserData {
 		public Color3f color = new Color3f();
+		public boolean isSelectable = true;
 		public UserData() {
 			color.set(settings.baseColor);
 		}

@@ -20,6 +20,12 @@ public interface PlannerController {
 	public void putBox(String name, String on) throws InterruptedException;
 	
 	/**
+	 * 箱を削除する
+	 * @param name
+	 */
+	public void removeBox(String name);
+	
+	/**
 	 * オブジェクトを消して最初の状態に戻す
 	 */
 	public void clear() throws InterruptedException;

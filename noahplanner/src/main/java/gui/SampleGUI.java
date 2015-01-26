@@ -47,7 +47,6 @@ public class SampleGUI extends JFrame implements ActionListener {
 	JPanel panel = new JPanel();
 	CardLayout layout = new CardLayout();
 	JMenuItem mntmOpenFile;
-	JMenuItem mntmAdd;
 	// Label
 	JLabel stepLabel;
 	// 物体を表示するパネル
@@ -127,12 +126,18 @@ public class SampleGUI extends JFrame implements ActionListener {
 		rdbtnmntmNewRadioItem_3.addActionListener(this);
 		rdbtnmntmNewRadioItem_3.setActionCommand("text");
 
-		JMenu mnNewMenu_2 = new JMenu("Add");
+		JMenu mnNewMenu_2 = new JMenu("操作");
 		
-		mntmAdd = new JMenuItem("Add");
+		JMenuItem mntmAdd = new JMenuItem("Add");
 		mntmAdd.addActionListener(this);
-		mntmAdd.setActionCommand("Add");
+		mntmAdd.setActionCommand("add");
+		
+		JMenuItem mntmRemove = new JMenuItem("Remove");
+		mntmRemove.addActionListener(this);
+		mntmRemove.setActionCommand("remove");
+		
 		mnNewMenu_2.add(mntmAdd);
+		mnNewMenu_2.add(mntmRemove);
 		menuBar.add(mnNewMenu_2);
 
 		ButtonGroup group2 = new ButtonGroup();
@@ -509,14 +514,19 @@ public class SampleGUI extends JFrame implements ActionListener {
 				}
 			}
 
-		}else if(cmd.equals("Add")){
+		}else if(cmd.equals("add")){
 			 String value = JOptionPane.showInputDialog(this, "ブロックの名前は？");
-			 if(objects.contains(value)){
-				 
-			 }else{
-				 objects.add("value");
+			 if(!objects.contains(value)){
+				 objects.add(value);
 				 startPanel.putBox(value, null);
 				 goalPanel.putBox(value, null);
+			 }
+		}else if(cmd.equals("remove")){
+			 String value = JOptionPane.showInputDialog(this, "ブロックの名前は？");
+			 if(objects.contains(value)){
+				 objects.remove(value);
+				 startPanel.removeBox(value);
+				 goalPanel.removeBox(value);
 			 }
 		}
 
